@@ -1,0 +1,13 @@
+.advertisement-offers {
+  background-color: black;
+  border-radius: 0.4rem;
+  padding: 2rem 10rem;
+  text-align: center;
+  margin: 8rem auto;
+  width: 40%;
+}
+.advertisement-offers__title {
+  color: white;
+  font-size: large;
+  font-weight: bold;
+}
