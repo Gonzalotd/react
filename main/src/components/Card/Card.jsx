@@ -1,19 +1,11 @@
-import { useMemo } from 'react';
-import data from '../../data/data.json';
+
+import { useCard } from '../../hooks/useCard';
 import './Card.less'
 
 export default function Card({ searchTerm }) {
 
-    const filteredData = useMemo(() => {
-        if (!searchTerm) return data;
-        
-        return data.filter(product => 
-            product.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            product.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            product.category.toLowerCase().includes(searchTerm.toLowerCase())
-        );
-    }, [data, searchTerm]);
-    
+    const { filteredData, data } = useCard(searchTerm);
+
     if (!data || data.length === 0) {
         return <div className='error'>No hay datos disponibles en el JSON</div>;
     }
@@ -27,9 +19,9 @@ export default function Card({ searchTerm }) {
             </div>
         );
     }
-
+    
     return (
-        <div className="cards-section">
+        <div className="cards-section">          
             {searchTerm && (
                 <div className="cards__search-info">
                     <p>

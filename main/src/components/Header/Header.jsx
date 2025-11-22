@@ -1,11 +1,14 @@
 import './Header.less';
 import logo from '../../assets/img/fashion-store.png';
 
-import { AiOutlineShoppingCart, AiOutlineHeart, AiOutlineUser  } from "react-icons/ai";
+import { AiOutlineShoppingCart, AiOutlineHeart, AiOutlineUser, AiOutlineBgColors  } from "react-icons/ai";
 import { useState } from 'react';
+import { useColor } from '../../context/ColorContext';
 
 
 export default function Header({ onSearch }) {
+
+    const { setChangeColor, changeColor } = useColor();
    
     const menu = [
         { id: 1, title: 'INICIO'},
@@ -31,27 +34,30 @@ export default function Header({ onSearch }) {
         e.preventDefault();
     }
 
+
+
     return (
         <header className='header-menu'>
-            <nav className='header-menu__nav'>
+            <nav className={changeColor ? 'header-menu__nav' : 'header-menu__nav-ligth'} >
                 <a className='header-menu__logo-container' href='#'>
-                    <img 
+                    {/* <img 
                         src={logo} 
                         alt="Logo Fashion - Store"
-                        className='header-menu__logo-img' />
+                        className='header-menu__logo-img' /> */}
+                    <span className={changeColor ? 'header-menu__title' : 'header-menu__title-ligth'}>Fashion Store</span>
                 </a>
                 { menu.map( item => 
                     <a 
                         key={item.id}
                         href='#'
-                        className='header-menu__link'>
+                        className={changeColor ? 'header-menu__link' : 'header-menu__link-ligth'}>
                         {item.title}
                     </a>
                 )}
                 <form class="header-menu__search" role="search">
                     <div className="header-menu__search-wrapper">
                         <input 
-                            className="header-menu__search-input" 
+                            className={changeColor ? 'header-menu__search-input' : 'header-menu__search-input-ligth'} 
                             type="search" 
                             placeholder="Buscar productos..." 
                             aria-label="Buscar"
@@ -74,6 +80,7 @@ export default function Header({ onSearch }) {
                 <div className="header-menu__icons">
                     <AiOutlineShoppingCart size="2em"/>
                     <AiOutlineHeart size="2em"/>
+                    <AiOutlineBgColors size="2em" onClick={() => setChangeColor(!changeColor)} />
                     <AiOutlineUser size="2em"/>
                 </div>
 
