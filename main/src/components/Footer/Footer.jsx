@@ -1,4 +1,4 @@
-import { useColor } from '../../context/ColorContext';
+import { useColor } from '../../context/GeneralContext';
 import { useFooter } from '../../hooks/useFooter'
 import './Footer.less'
 

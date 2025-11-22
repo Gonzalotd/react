@@ -4,18 +4,20 @@ import Footer from "../components/Footer/Footer"
 import Header from "../components/Header/Header"
 import Card from "../components/card/Card"
 import Advertisement from "../components/Advertisement/Advertisement";
-import { ColorProvider } from "../context/ColorContext";
+import { GeneralProvider } from "../context/GeneralContext";
+import { Login } from "../components/Login/Login";
 
 export default function Home() {
 
     const [searchTerm, setSearchTerm] = useState('');
 
     return (
-        <ColorProvider>
+        <GeneralProvider>
             <Header onSearch={setSearchTerm}/>
             <Advertisement />
             <Card searchTerm={searchTerm}/>
+            <Login />
             <Footer />
-        </ColorProvider>
+        </GeneralProvider>
     )
 } 

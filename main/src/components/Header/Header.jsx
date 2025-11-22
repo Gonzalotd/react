@@ -1,14 +1,17 @@
 import './Header.less';
 import logo from '../../assets/img/fashion-store.png';
 
-import { AiOutlineShoppingCart, AiOutlineHeart, AiOutlineUser, AiOutlineBgColors  } from "react-icons/ai";
+import { AiOutlineShoppingCart, AiOutlineHeart, AiOutlineUser, AiOutlineBgColors, AiOutlineLogout  } from "react-icons/ai";
 import { useState } from 'react';
-import { useColor } from '../../context/ColorContext';
+import { useColor } from '../../context/GeneralContext';
+import { useLogin } from '../../hooks/useLogin';
 
 
 export default function Header({ onSearch }) {
 
-    const { setChangeColor, changeColor } = useColor();
+    const { setChangeColor, changeColor, toggleLogin, user, logout } = useColor();
+
+    const { handleLoginSubmit } = useLogin();
    
     const menu = [
         { id: 1, title: 'INICIO'},
@@ -34,7 +37,10 @@ export default function Header({ onSearch }) {
         e.preventDefault();
     }
 
-
+    const handleLogout = () => {
+        logout();
+        localStorage.removeItem('user');
+    };
 
     return (
         <header className='header-menu'>
@@ -81,7 +87,23 @@ export default function Header({ onSearch }) {
                     <AiOutlineShoppingCart size="2em"/>
                     <AiOutlineHeart size="2em"/>
                     <AiOutlineBgColors size="2em" onClick={() => setChangeColor(!changeColor)} />
-                    <AiOutlineUser size="2em"/>
+                    {user ? (
+                        <div className='header-menu__info'>
+                            <span className='header-menu__name'>
+                                Hola, {user}
+                            </span>
+                            <AiOutlineLogout 
+                                size="2em"
+                                onClick={handleLogout}
+                                title='Cerrar sesión'
+                            />
+                        </div>
+                    ) : (
+                        <AiOutlineUser 
+                            size="2em"
+                            onClick={toggleLogin}
+                            title='Inicie Sessión'/>
+                    )}
                 </div>
 
             </nav>
