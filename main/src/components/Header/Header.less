@@ -15,6 +15,42 @@
         align-items: center;
         justify-content: space-evenly;
         height: 100%;
+
+        &-ligth {
+            background-color: white;
+            color: black;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-evenly;
+            height: 100%;
+            box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+        }
+    }
+
+    &__info {
+        display: flex;
+        flex-direction: column-reverse;
+        justify-content: center;
+        align-items: center;
+    }
+
+    &__title {
+        font-size: 1.8rem;
+        font-weight: bold;
+        color: white;
+        height: 100%;
+        display: flex;
+        align-items: center;
+
+        &-ligth {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: black;
+            height: 100%;
+            display: flex;
+            align-items: center;
+        }
     }
 
     &__link {
@@ -41,11 +77,38 @@
                 width: 100%;
             }
         }
+
+        &-ligth {
+            text-decoration: none;
+            color: black;
+            position: relative;
+
+            &::after {
+                content: '';
+                position: absolute;
+                bottom: -5px;
+                left: 50%;
+                width: 0;
+                height: 2px;
+                background: rgb(218, 123, 123);
+                transition: all 0.3s ease;
+                transform: translateX(-50%);
+            }
+
+            &:hover {
+                color: rgb(218, 123, 123);
+
+                &::after {
+                    width: 100%;
+                }
+            }
+        }
     }
 
     &__logo-container {
         height: 5rem;
         width: 15rem;
+        text-decoration: none;
     }
 
     &__logo-img {
@@ -63,6 +126,15 @@
             width: 100%;
             border-radius: 0.4rem;
             padding: 0.4rem;
+
+            &-ligth {
+                border: none;
+                height: 2rem;
+                width: 100%;
+                border-radius: 0.4rem;
+                padding: 0.4rem;
+                box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+            }
         }
 
         &-wrapper {

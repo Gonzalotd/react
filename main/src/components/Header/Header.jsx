@@ -1,11 +1,17 @@
 import './Header.less';
+import '../Cart/Cart.css'
 import logo from '../../assets/img/fashion-store.png';
 
-import { AiOutlineShoppingCart, AiOutlineHeart, AiOutlineUser  } from "react-icons/ai";
+import { AiOutlineShoppingCart, AiOutlineHeart, AiOutlineUser, AiOutlineBgColors, AiOutlineLogout  } from "react-icons/ai";
 import { useState } from 'react';
+import { useColor } from '../../context/GeneralContext';
+import { useCart } from '../../context/CartContext';
 
 
 export default function Header({ onSearch }) {
+
+    const { setChangeColor, changeColor, toggleLogin, user, logout } = useColor();
+    const { toggleCart, totalItems } = useCart();
    
     const menu = [
         { id: 1, title: 'INICIO'},
@@ -18,6 +24,7 @@ export default function Header({ onSearch }) {
 
     const handleInputChange = (e) => {
         const value = e.target.value;
+        console.log("value", value);
         setInputValue(value);
         onSearch(value);
     }
@@ -31,27 +38,33 @@ export default function Header({ onSearch }) {
         e.preventDefault();
     }
 
+    const handleLogout = () => {
+        logout();
+        localStorage.removeItem('user');
+    };
+
     return (
         <header className='header-menu'>
-            <nav className='header-menu__nav'>
+            <nav className={changeColor ? 'header-menu__nav' : 'header-menu__nav-ligth'} >
                 <a className='header-menu__logo-container' href='#'>
-                    <img 
+                    {/* <img 
                         src={logo} 
                         alt="Logo Fashion - Store"
-                        className='header-menu__logo-img' />
+                        className='header-menu__logo-img' /> */}
+                    <span className={changeColor ? 'header-menu__title' : 'header-menu__title-ligth'}>Fashion Store</span>
                 </a>
                 { menu.map( item => 
                     <a 
                         key={item.id}
                         href='#'
-                        className='header-menu__link'>
+                        className={changeColor ? 'header-menu__link' : 'header-menu__link-ligth'}>
                         {item.title}
                     </a>
                 )}
                 <form class="header-menu__search" role="search">
                     <div className="header-menu__search-wrapper">
                         <input 
-                            className="header-menu__search-input" 
+                            className={changeColor ? 'header-menu__search-input' : 'header-menu__search-input-ligth'} 
                             type="search" 
                             placeholder="Buscar productos..." 
                             aria-label="Buscar"
@@ -72,9 +85,35 @@ export default function Header({ onSearch }) {
                 </form>
 
                 <div className="header-menu__icons">
-                    <AiOutlineShoppingCart size="2em"/>
+                    <div className="cart-icon-container">
+                        <AiOutlineShoppingCart 
+                            size="2em"
+                            className='show-cart'
+                            onClick={toggleCart}
+                        />
+                        {totalItems > 0 && (
+                            <span className="cart-badge">{totalItems}</span>
+                        )}
+                    </div>
                     <AiOutlineHeart size="2em"/>
-                    <AiOutlineUser size="2em"/>
+                    <AiOutlineBgColors size="2em" onClick={() => setChangeColor(!changeColor)} />
+                    {user ? (
+                        <div className='header-menu__info'>
+                            <span className='header-menu__name'>
+                                Hola, {user}
+                            </span>
+                            <AiOutlineLogout 
+                                size="2em"
+                                onClick={handleLogout}
+                                title='Cerrar sesión'
+                            />
+                        </div>
+                    ) : (
+                        <AiOutlineUser 
+                            size="2em"
+                            onClick={toggleLogin}
+                            title='Inicie Sessión'/>
+                    )}
                 </div>
 
             </nav>
