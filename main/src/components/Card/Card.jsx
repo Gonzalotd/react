@@ -1,10 +1,16 @@
 
+import { useCart } from '../../context/CartContext';
 import { useCard } from '../../hooks/useCard';
 import './Card.less'
 
 export default function Card({ searchTerm }) {
 
     const { filteredData, data } = useCard(searchTerm);
+    const { addToCart } = useCart();
+
+    const handleAddToCart = (product) => {
+        addToCart(product);
+    };
 
     if (!data || data.length === 0) {
         return <div className='error'>No hay datos disponibles en el JSON</div>;
@@ -50,7 +56,9 @@ export default function Card({ searchTerm }) {
                         <h3 className='cards-container__title'>{dataCard.title}</h3>
                         <p className='cards-container__description'>{dataCard.description}</p>
                         <span className='cards-container__price'>${dataCard.price}</span>                       
-                        <button className='cards-container__btn'>Añadir al Carrito</button>
+                        <button
+                            className='cards-container__btn'
+                            onClick={() => handleAddToCart(dataCard)}>Añadir al Carrito</button>
                     </div>
                 ))}
             </div>

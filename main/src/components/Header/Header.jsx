@@ -1,17 +1,17 @@
 import './Header.less';
+import '../Cart/Cart.css'
 import logo from '../../assets/img/fashion-store.png';
 
 import { AiOutlineShoppingCart, AiOutlineHeart, AiOutlineUser, AiOutlineBgColors, AiOutlineLogout  } from "react-icons/ai";
 import { useState } from 'react';
 import { useColor } from '../../context/GeneralContext';
-import { useLogin } from '../../hooks/useLogin';
+import { useCart } from '../../context/CartContext';
 
 
 export default function Header({ onSearch }) {
 
     const { setChangeColor, changeColor, toggleLogin, user, logout } = useColor();
-
-    const { handleLoginSubmit } = useLogin();
+    const { toggleCart, totalItems } = useCart();
    
     const menu = [
         { id: 1, title: 'INICIO'},
@@ -24,6 +24,7 @@ export default function Header({ onSearch }) {
 
     const handleInputChange = (e) => {
         const value = e.target.value;
+        console.log("value", value);
         setInputValue(value);
         onSearch(value);
     }
@@ -84,7 +85,16 @@ export default function Header({ onSearch }) {
                 </form>
 
                 <div className="header-menu__icons">
-                    <AiOutlineShoppingCart size="2em"/>
+                    <div className="cart-icon-container">
+                        <AiOutlineShoppingCart 
+                            size="2em"
+                            className='show-cart'
+                            onClick={toggleCart}
+                        />
+                        {totalItems > 0 && (
+                            <span className="cart-badge">{totalItems}</span>
+                        )}
+                    </div>
                     <AiOutlineHeart size="2em"/>
                     <AiOutlineBgColors size="2em" onClick={() => setChangeColor(!changeColor)} />
                     {user ? (
