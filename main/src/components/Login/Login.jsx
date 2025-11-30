@@ -1,3 +1,4 @@
+import { redirect, useLocation, useNavigate } from "react-router";
 import { useColor } from "../../context/GeneralContext"
 import { useLogin } from "../../hooks/useLogin";
 
@@ -5,32 +6,39 @@ import './Login.less'
 
 export const Login = () => {
 
-    const { changeColor, showLogin, closeLogin } = useColor();
+    const { changeColor, redirectPath, clearRedirect } = useColor();
+    const { formData, handleLoginSubmit, handleInputChange, user } = useLogin();
+    const navigate = useNavigate();
+    const location = useLocation();
 
-    const { formData, handleLoginSubmit, handleInputChange } = useLogin();
+    if ( user ) {
+        navigate('/');
+        return null;
+    }
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+
+        const from = location.state?.from?.pathname || redirectPath || '/';
+        handleLoginSubmit(e);
+        navigate(from, { replace: true });
+        clearRedirect();
+    }
    
-
-    if (!showLogin) return null;
     return (
-        <div className="login-overlay" onClick={closeLogin}>
-        <div className="login-form" onClick={(e) => e.stopPropagation()}>
-            <button 
-                className="login-close" 
-                onClick={closeLogin}
-            >
-                ✕
-            </button>
+        <div className="login-page">
+        <div className={`login-form ${changeColor ? 'dark' : ''}`}>
             <h2>Iniciar Sesión</h2>
-            <form onSubmit={handleLoginSubmit}>
+            <form onSubmit={handleSubmit}>
                 <div className="form-group">
-                    <label htmlFor="nombre">Email:</label>
+                    <label htmlFor="email">Email:</label>
                     <input 
                         type="email" 
                         id="email" 
                         name="email" 
                         required 
                         className={changeColor ? 'form-input' : 'form-input-ligth'}
-                        value={formData.nombre}
+                        value={formData.email}
                         onChange={handleInputChange}
                         placeholder="Ingresa tu email"
                     />

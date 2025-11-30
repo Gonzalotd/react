@@ -2,13 +2,19 @@ import { useCart } from '../../context/CartContext';
 import { EmptyCart } from "./EmptyCart"
 import './Cart.less';
 import { CartItem } from './CartItem';
+import { useLogin } from '../../hooks/useLogin';
 
 
 export const Cart = () => {
 
     const { showCart, closeCart, cartItems, cartTotal, clearCart } = useCart();
+    const { user } = useLogin();
 
-    console.log("en cart", cartTotal);
+    const handleProcesarPago = () => {
+        alert('se redirigirá a la pasarela de pago')
+        clearCart();
+    }
+    
     if ( !showCart ) return null;
     return ( 
         <div className="cart-overlay" onClick={closeCart}>
@@ -31,14 +37,16 @@ export const Cart = () => {
                                 <span>${cartTotal.toFixed(2)}</span>
                             </div>
                             
-                            <div className="cart-actions">
-                                <button className="clear-cart" onClick={clearCart}>
-                                    Vaciar Carrito
-                                </button>
-                                <button className="checkout-btn">
-                                    Proceder al Pago
-                                </button>
-                            </div>
+                            {user && (
+                                <div className="cart-actions">
+                                    <button className="clear-cart" onClick={clearCart}>
+                                        Vaciar Carrito
+                                    </button>
+                                    <button className="checkout-btn" onClick={() => handleProcesarPago()}>
+                                        Proceder al Pago
+                                    </button>
+                                </div>
+                            )}
                         </div>
                     </>
                 )}

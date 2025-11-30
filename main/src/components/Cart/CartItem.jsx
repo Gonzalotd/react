@@ -1,7 +1,9 @@
 import { useCart } from "../../context/CartContext"
+import { useLogin } from "../../hooks/useLogin";
 
 export const CartItem = ({ item }) => {
     const { removeFromCart, updateQuantity } = useCart();
+    const { user } = useLogin();
 
     const handleQuantityChange = (e) => {
         const newQuantity = parseInt(e.target.value);
@@ -34,37 +36,39 @@ export const CartItem = ({ item }) => {
                 <p className="cart-item-category">{item.category}</p>
                 <p className="cart-item-price">${item.price}</p>
                 
-                <div className="cart-item-actions">
-                    <button 
-                        className="quantity-btn"
-                        onClick={decrementQuantity}
-                        disabled={item.quantity <= 1}
-                    >
-                        -
-                    </button>
-                    
-                    <input 
-                        type="number" 
-                        value={item.quantity}
-                        onChange={handleQuantityChange}
-                        min="1"
-                        className="quantity-input"
-                    />
-                    
-                    <button 
-                        className="quantity-btn"
-                        onClick={incrementQuantity}
-                    >
-                        +
-                    </button>
-                    
-                    <button 
-                        className="remove-btn"
-                        onClick={() => removeFromCart(item.id)}
-                    >
-                        Eliminar
-                    </button>
-                </div>
+                {user && (
+                    <div className="cart-item-actions">
+                        <button 
+                            className="quantity-btn"
+                            onClick={decrementQuantity}
+                            disabled={item.quantity <= 1}
+                        >
+                            -
+                        </button>
+                        
+                        <input 
+                            type="number" 
+                            value={item.quantity}
+                            onChange={handleQuantityChange}
+                            min="1"
+                            className="quantity-input"
+                        />
+                        
+                        <button 
+                            className="quantity-btn"
+                            onClick={incrementQuantity}
+                        >
+                            +
+                        </button>
+                        
+                        <button 
+                            className="remove-btn"
+                            onClick={() => removeFromCart(item.id)}
+                        >
+                            Eliminar
+                        </button>
+                    </div>
+                )}
             </div>
             
             <div className="cart-item-subtotal">

@@ -4,31 +4,32 @@ const GeneralContext = createContext();
 
 export function GeneralProvider({ children }) {
     const [changeColor, setChangeColor ] = useState(false);
-    const [showLogin, setShowLogin] = useState(false);
     const [user, setUser] = useState(null);
+    const [redirectPath, setRedirectPath] = useState('/');
 
     useEffect(() => {
         const storedUser = localStorage.getItem('user');
         if ( storedUser ) {
             setUser(storedUser)
         }
-    }, [])
-
-    const toggleLogin = () => {
-        setShowLogin(!showLogin);
-    }
-
-    const closeLogin = () => {
-        setShowLogin(false);
-    }
-
-    const login = (userData) => {
+    }, []);
+   
+    const login = (userData, redirectTo = '/') => {
         setUser(userData);
-        closeLogin();
+        setRedirectPath(redirectTo)
     }
 
     const logout = () => {
         setUser(null);
+        setRedirectPath('/');
+    }
+
+    const setLoginRedirect = (path) => {
+        setRedirectPath(path);
+    }
+
+    const clearRedirect = () => {
+        setRedirectPath('/');
     }
 
 
@@ -36,12 +37,12 @@ export function GeneralProvider({ children }) {
         <GeneralContext.Provider value={{ 
             changeColor, 
             setChangeColor,
-            showLogin,
-            toggleLogin,
-            closeLogin,
             user,
             login,
-            logout            
+            logout,
+            redirectPath,
+            setLoginRedirect,
+            clearRedirect      
         }}>
             {children}
         </GeneralContext.Provider>

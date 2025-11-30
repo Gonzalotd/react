@@ -1,11 +1,11 @@
 import './Header.less';
 import '../Cart/Cart.css'
-import logo from '../../assets/img/fashion-store.png';
 
 import { AiOutlineShoppingCart, AiOutlineHeart, AiOutlineUser, AiOutlineBgColors, AiOutlineLogout  } from "react-icons/ai";
 import { useState } from 'react';
 import { useColor } from '../../context/GeneralContext';
 import { useCart } from '../../context/CartContext';
+import { Link, useNavigate } from 'react-router';
 
 
 export default function Header({ onSearch }) {
@@ -14,13 +14,14 @@ export default function Header({ onSearch }) {
     const { toggleCart, totalItems } = useCart();
    
     const menu = [
-        { id: 1, title: 'INICIO'},
-        { id: 2, title: 'CATEGORÍAS'},
-        { id: 3, title: 'OFERTAS'},
-        { id: 4, title: 'CONTACTO'}
+        { id: 1, title: 'INICIO', path:'/'},
+        { id: 2, title: 'ABOUT', path:'/about'},
+        { id: 3, title: 'OFERTAS', path:'/ofertas'},
+        { id: 4, title: 'CONTACTO', path:'/contacto'}
     ]
 
     const [inputValue, setInputValue] = useState('');
+    const navigate = useNavigate();
 
     const handleInputChange = (e) => {
         const value = e.target.value;
@@ -41,25 +42,26 @@ export default function Header({ onSearch }) {
     const handleLogout = () => {
         logout();
         localStorage.removeItem('user');
+        navigate('/')
     };
 
     return (
         <header className='header-menu'>
             <nav className={changeColor ? 'header-menu__nav' : 'header-menu__nav-ligth'} >
-                <a className='header-menu__logo-container' href='#'>
+                <Link className='header-menu__logo-container' to='/'>
                     {/* <img 
                         src={logo} 
                         alt="Logo Fashion - Store"
                         className='header-menu__logo-img' /> */}
                     <span className={changeColor ? 'header-menu__title' : 'header-menu__title-ligth'}>Fashion Store</span>
-                </a>
+                </Link>
                 { menu.map( item => 
-                    <a 
+                    <Link 
                         key={item.id}
-                        href='#'
+                        to={item.path}
                         className={changeColor ? 'header-menu__link' : 'header-menu__link-ligth'}>
                         {item.title}
-                    </a>
+                    </Link>
                 )}
                 <form class="header-menu__search" role="search">
                     <div className="header-menu__search-wrapper">
@@ -109,10 +111,11 @@ export default function Header({ onSearch }) {
                             />
                         </div>
                     ) : (
-                        <AiOutlineUser 
-                            size="2em"
-                            onClick={toggleLogin}
-                            title='Inicie Sessión'/>
+                        <Link to="/login" className={changeColor ? 'user-link-ligth' : 'user-link'} >
+                            <AiOutlineUser 
+                                size="2em"
+                                title='Inicie Sessión'/>
+                        </Link>
                     )}
                 </div>
 
