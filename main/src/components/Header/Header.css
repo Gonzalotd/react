@@ -135,3 +135,9 @@
   flex-direction: row;
   gap: 20px;
 }
+.header-menu__icons .user-link {
+  color: black;
+}
+.header-menu__icons .user-link-ligth {
+  color: white;
+}

@@ -1,16 +1,37 @@
 
+import { useLocation, useNavigate } from 'react-router';
 import { useCart } from '../../context/CartContext';
 import { useCard } from '../../hooks/useCard';
 import './Card.less'
+import { useColor } from '../../context/GeneralContext';
 
 export default function Card({ searchTerm }) {
 
     const { filteredData, data } = useCard(searchTerm);
     const { addToCart } = useCart();
+    const location = useLocation();
+    const navigate = useNavigate();
+    const { user, setLoginRedirect } = useColor();
+
+
 
     const handleAddToCart = (product) => {
+        if(!user) {
+            setLoginRedirect(location.pathname);
+            navigate('/login');
+            return;
+        }
         addToCart(product);
     };
+
+    const handleDetailProduct = (product) => {
+        if ( !user ) {
+            setLoginRedirect(location.pathname);
+            navigate('/login');
+            return;
+        }
+        navigate(`/product/${product.id}`);
+    }
 
     if (!data || data.length === 0) {
         return <div className='error'>No hay datos disponibles en el JSON</div>;
@@ -40,7 +61,7 @@ export default function Card({ searchTerm }) {
             
             <div className="cards">
                 {filteredData.map((dataCard) => (
-                    <div key={dataCard.id} className='cards-container'>
+                    <div key={dataCard.id} className='cards-container' id={dataCard.id}>
                         <figure className='cards-container__imagen'>
                             <img 
                                 src={dataCard.image} 
@@ -55,10 +76,18 @@ export default function Card({ searchTerm }) {
                         <span className='cards-container__category'>{dataCard.category}</span>
                         <h3 className='cards-container__title'>{dataCard.title}</h3>
                         <p className='cards-container__description'>{dataCard.description}</p>
-                        <span className='cards-container__price'>${dataCard.price}</span>                       
-                        <button
-                            className='cards-container__btn'
-                            onClick={() => handleAddToCart(dataCard)}>Añadir al Carrito</button>
+                        <span className='cards-container__price'>${dataCard.price}</span>
+                        {user && (
+                            <>
+                            <button
+                                className='cards-container__btn'
+                                onClick={() => handleDetailProduct(dataCard)}>Mas Detalles</button>                    
+                            <button
+                                className='cards-container__btn'
+                                onClick={() => handleAddToCart(dataCard)}>Añadir al Carrito</button>
+                            </>
+                            )
+                        }
                     </div>
                 ))}
             </div>

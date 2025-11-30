@@ -4,10 +4,9 @@ import Footer from "../components/Footer/Footer"
 import Header from "../components/Header/Header"
 import Card from "../components/card/Card"
 import Advertisement from "../components/Advertisement/Advertisement";
-import { GeneralProvider } from "../context/GeneralContext";
 import { Login } from "../components/Login/Login";
-import { CartProvider } from "../context/CartContext";
 import { Cart } from "../components/Cart/Cart";
+import LoginUser from "./LoginUser";
 
 export default function Home() {
 
@@ -18,15 +17,15 @@ export default function Home() {
     }
 
     return (
-        <GeneralProvider>
-            <CartProvider>
-                <Header onSearch={handleSearch}/>
-                <Advertisement />
+        <>
+            <Header onSearch={handleSearch}/>
+            <Advertisement />
+            <main>
+                <h1>Bienvenido a Nuestra Tienda</h1>
                 <Card searchTerm={searchTerm}/>
-                <Login />
-                <Cart />
-                <Footer />
-            </CartProvider>
-        </GeneralProvider>
-    )
+            </main>
+            <Cart />
+            <Footer />
+        </>
+)
 } 
