@@ -21,8 +21,6 @@ export const CartItem = ({ item }) => {
 
     const itemSubtotal = (item.price * item.quantity).toFixed(2);
 
-    console.log("itemSubtotal", itemSubtotal)
-
     return (
         <div className="cart-item">
             <img 
