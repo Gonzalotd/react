@@ -7,12 +7,30 @@ import { useColor } from '../../context/GeneralContext';
 import { useCart } from '../../context/CartContext';
 import { Link, useNavigate } from 'react-router';
 
-
 export default function Header({ onSearch }) {
 
+    let usuario = ""
     const { setChangeColor, changeColor, toggleLogin, user, logout } = useColor();
     const { toggleCart, totalItems } = useCart();
-   
+
+    console.log("user", user)
+    if ( user ) {
+        try {
+            let dataUser;
+            if ( typeof user === 'string') {
+                dataUser = JSON.parse(user);
+            } else {
+                dataUser = user;
+            }
+
+            usuario = dataUser.name ? dataUser.name : dataUser.email;
+
+        } catch (error) {
+            console.log("Error de usuario", error)
+        }
+        
+    }    
+
     const menu = [
         { id: 1, title: 'INICIO', path:'/'},
         { id: 2, title: 'ABOUT', path:'/about'},
@@ -41,7 +59,7 @@ export default function Header({ onSearch }) {
 
     const handleLogout = () => {
         logout();
-        localStorage.removeItem('user');
+        localStorage.removeItem('usuario');
         navigate('/')
     };
 
@@ -49,10 +67,6 @@ export default function Header({ onSearch }) {
         <header className='header-menu'>
             <nav className={changeColor ? 'header-menu__nav' : 'header-menu__nav-ligth'} >
                 <Link className='header-menu__logo-container' to='/'>
-                    {/* <img 
-                        src={logo} 
-                        alt="Logo Fashion - Store"
-                        className='header-menu__logo-img' /> */}
                     <span className={changeColor ? 'header-menu__title' : 'header-menu__title-ligth'}>Fashion Store</span>
                 </Link>
                 { menu.map( item => 
@@ -99,10 +113,10 @@ export default function Header({ onSearch }) {
                     </div>
                     <AiOutlineHeart size="2em"/>
                     <AiOutlineBgColors size="2em" onClick={() => setChangeColor(!changeColor)} />
-                    {user ? (
+                    { user ? (
                         <div className='header-menu__info'>
                             <span className='header-menu__name'>
-                                Hola, {user}
+                                Hola, {usuario}
                             </span>
                             <AiOutlineLogout 
                                 size="2em"
@@ -120,7 +134,6 @@ export default function Header({ onSearch }) {
                 </div>
 
             </nav>
-
         </header>
     )
 }; 

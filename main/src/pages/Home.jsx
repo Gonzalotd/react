@@ -4,9 +4,7 @@ import Footer from "../components/Footer/Footer"
 import Header from "../components/Header/Header"
 import Card from "../components/card/Card"
 import Advertisement from "../components/Advertisement/Advertisement";
-import { Login } from "../components/Login/Login";
-import { Cart } from "../components/Cart/Cart";
-import LoginUser from "./LoginUser";
+import Cart from "../components/Cart/Cart";
 
 export default function Home() {
 

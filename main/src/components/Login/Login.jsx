@@ -44,6 +44,19 @@ export const Login = () => {
                     />
                 </div>
                 <div className="form-group">
+                    <label htmlFor="name">Nombre:</label>
+                    <input 
+                        type="text" 
+                        id="name" 
+                        name="name" 
+                        required 
+                        className={changeColor ? 'form-input' : 'form-input-ligth'}
+                        value={formData.name}
+                        onChange={handleInputChange}
+                        placeholder="Ingresa tu nombre"
+                    />
+                </div>
+                <div className="form-group">
                     <label htmlFor="password">Contraseña:</label>
                     <input 
                         type="password" 
