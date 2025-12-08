@@ -5,8 +5,15 @@ import { useNavigate } from "react-router";
 export const useLogin = () => {
     const [formData, setFormData] = useState({
         email: '',
+        name: '',
         password: ''
     });
+
+    // const usuario = {
+    //     email: "",
+    //     name: "",
+    //     rol: ""
+    // }
     
     const { login } = useColor();
     const navigate = useNavigate();
@@ -14,19 +21,26 @@ export const useLogin = () => {
     const handleLoginSubmit = (e) => {
         e.preventDefault();
 
-        const { email, password } = formData;
+        const { email, name, password } = formData;
         if (!email || !password) {
             alert('Por favor completa todos los campos');
             return;
         }
 
+        const usuario = {
+            email: email,
+            name: name || email.split('@')[0],
+            rol: email.includes('@admin.com') ? 'admin' : 'user'
+        };
 
-        localStorage.setItem('user', email);
-        login(email);
+        // localStorage.setItem('user', email);
+        localStorage.setItem('usuario', JSON.stringify(usuario));
+        login(usuario);
         navigate('/');
 
         setFormData({
             email: '',
+            name: '',
             password: ''
         });
     }

@@ -8,9 +8,15 @@ export function GeneralProvider({ children }) {
     const [redirectPath, setRedirectPath] = useState('/');
 
     useEffect(() => {
-        const storedUser = localStorage.getItem('user');
-        if ( storedUser ) {
-            setUser(storedUser)
+        const storedUser = localStorage.getItem('usuario');
+        if (storedUser) {
+            try {
+                const userObj = JSON.parse(storedUser);
+                setUser(userObj); 
+            } catch (error) {
+                console.error("Error parsing user from localStorage:", error);
+                localStorage.removeItem('usuario');
+            }
         }
     }, []);
    
@@ -31,7 +37,6 @@ export function GeneralProvider({ children }) {
     const clearRedirect = () => {
         setRedirectPath('/');
     }
-
 
     return (
         <GeneralContext.Provider value={{ 
