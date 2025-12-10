@@ -1,24 +1,25 @@
 import { useNavigate, useParams } from "react-router"
-import { useCart } from "../../context/CartContext";
+import { useDispatch } from "react-redux";
+import { addToCart } from '../../redux/slices/cartSlice';
 import Header from '../Header/Header';
 import Footer from '../Footer/Footer';
 import './DetailProduct.less'; 
-import { useCard } from "../../hooks/useCard";
+import { useProducts } from "../../hooks/useProducts";
 import { useColor } from "../../context/GeneralContext";
 
 export default function DetailProduct() {
-
     const { productId } = useParams();
     const navigate = useNavigate();
-    const { data } = useCard('');
-    const { addToCart } = useCart();
+    const { data } = useProducts('');
+    const dispatch = useDispatch();
     const { user } = useColor();
     const product = data.find(item => parseInt(item.id) === parseInt(productId));
 
-    console.log(productId)
+    console.log("Detalle producto ID:", productId);
 
-    if (!user ) {
-        navigate('/')
+    if (!user) {
+        navigate('/');
+        return null;
     }
 
     if (!product) {
@@ -31,12 +32,13 @@ export default function DetailProduct() {
                 </div>
                 <Footer />
             </>
-        )
+        );
     }
 
     const handleAddToCart = () => {
-        addToCart(product);
-    }
+        console.log('➕ Agregando al carrito desde detalle:', product);
+        dispatch(addToCart(product));
+    };
 
     return (
         <>
@@ -59,7 +61,7 @@ export default function DetailProduct() {
                         <p className="detail-product__description">{product.description}</p>
                         
                         <div className="detail-product__price">
-                            ${product.price}
+                            ${product.price.toFixed(2)}
                         </div>
                         
                         <div className="detail-product__actions">
@@ -82,7 +84,12 @@ export default function DetailProduct() {
                             <ul>
                                 <li>Categoría: {product.category}</li>
                                 <li>Producto ID: {product.id}</li>
-                                {/* Agrega más características según tu data */}
+                                {product.rating && (
+                                    <>
+                                        <li>Valoración: {product.rating.rate} / 5</li>
+                                        <li>Reseñas: {product.rating.count}</li>
+                                    </>
+                                )}
                             </ul>
                         </div>
                     </div>
@@ -90,5 +97,5 @@ export default function DetailProduct() {
             </div>
             <Footer />
         </>
-    )
+    );
 }
