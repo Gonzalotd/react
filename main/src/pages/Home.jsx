@@ -2,9 +2,9 @@ import { useState } from "react"
 
 import Footer from "../components/Footer/Footer"
 import Header from "../components/Header/Header"
-import Card from "../components/card/Card"
 import Advertisement from "../components/Advertisement/Advertisement";
-import Cart from "../components/Cart/Cart";
+import Card from "../components/Card/Card";
+
 
 export default function Home() {
 
@@ -22,8 +22,8 @@ export default function Home() {
                 <h1>Bienvenido a Nuestra Tienda</h1>
                 <Card searchTerm={searchTerm}/>
             </main>
-            <Cart />
+            <Card />
             <Footer />
         </>
-)
+    )
 } 

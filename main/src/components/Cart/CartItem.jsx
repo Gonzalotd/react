@@ -1,22 +1,27 @@
-import { useCart } from "../../context/CartContext"
+import { useDispatch } from "react-redux"; 
+import { removeFromCart, updateQuantity } from '../../redux/slices/cartSlice';
 import { useLogin } from "../../hooks/useLogin";
 
 export const CartItem = ({ item }) => {
-    const { removeFromCart, updateQuantity } = useCart();
+    const dispatch = useDispatch();
     const { user } = useLogin();
 
     const handleQuantityChange = (e) => {
         const newQuantity = parseInt(e.target.value);
-        updateQuantity(item.id, newQuantity);
+        dispatch(updateQuantity({ id: item.id, quantity: newQuantity }));
     };
 
     const incrementQuantity = () => {
-        updateQuantity(item.id, item.quantity + 1);
+        dispatch(updateQuantity({ id: item.id, quantity: item.quantity + 1 }));
     };
 
     const decrementQuantity = () => {
-        console.log("item.id", item.id, item.quantity - 1)
-        updateQuantity(item.id, item.quantity - 1);
+        console.log("item.id", item.id, item.quantity - 1);
+        dispatch(updateQuantity({ id: item.id, quantity: item.quantity - 1 }));
+    };
+
+    const handleRemove = () => {
+        dispatch(removeFromCart(item.id));
     };
 
     const itemSubtotal = (item.price * item.quantity).toFixed(2);
@@ -27,12 +32,15 @@ export const CartItem = ({ item }) => {
                 src={item.image} 
                 alt={item.title}
                 className="cart-item-image"
+                onError={(e) => {
+                    e.target.src = `https://picsum.photos/80/80?random=${item.id}`;
+                }}
             />
             
             <div className="cart-item-details">
                 <h4 className="cart-item-title">{item.title}</h4>
                 <p className="cart-item-category">{item.category}</p>
-                <p className="cart-item-price">${item.price}</p>
+                <p className="cart-item-price">${item.price.toFixed(2)}</p>
                 
                 {user && (
                     <div className="cart-item-actions">
@@ -61,7 +69,7 @@ export const CartItem = ({ item }) => {
                         
                         <button 
                             className="remove-btn"
-                            onClick={() => removeFromCart(item.id)}
+                            onClick={handleRemove}
                         >
                             Eliminar
                         </button>
@@ -70,7 +78,7 @@ export const CartItem = ({ item }) => {
             </div>
             
             <div className="cart-item-subtotal">
-            ${itemSubtotal}
+                ${itemSubtotal}
             </div>
         </div>
     );
