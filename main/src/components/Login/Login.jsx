@@ -1,4 +1,4 @@
-import { redirect, useLocation, useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import { useColor } from "../../context/GeneralContext"
 import { useLogin } from "../../hooks/useLogin";
 

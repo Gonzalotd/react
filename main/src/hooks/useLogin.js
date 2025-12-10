@@ -8,12 +8,6 @@ export const useLogin = () => {
         name: '',
         password: ''
     });
-
-    // const usuario = {
-    //     email: "",
-    //     name: "",
-    //     rol: ""
-    // }
     
     const { login } = useColor();
     const navigate = useNavigate();
@@ -33,7 +27,6 @@ export const useLogin = () => {
             rol: email.includes('@admin.com') ? 'admin' : 'user'
         };
 
-        // localStorage.setItem('user', email);
         localStorage.setItem('usuario', JSON.stringify(usuario));
         login(usuario);
         navigate('/');
@@ -52,11 +45,6 @@ export const useLogin = () => {
             [name]: value
         }));
     }
-
-    // const handleLogout = () => {
-    //     localStorage.removeItem('user');
-    //     logout();
-    // }
 
     return {
         formData,
