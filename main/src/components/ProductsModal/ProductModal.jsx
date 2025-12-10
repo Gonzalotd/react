@@ -1,4 +1,3 @@
-// components/ProductModal.jsx
 import { useState, useEffect } from 'react';
 import './ProductModal.less';
 
